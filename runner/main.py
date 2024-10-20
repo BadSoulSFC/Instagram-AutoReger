@@ -38,14 +38,21 @@ class main_functions:
     def passwdgen() -> str:
         available_chars = "!@#$%^&*()_+-=01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         return "".join(random.sample(available_chars, random.randint(8, 12)))
+    
+    def usrnamegen(pre_genname: str) -> str:
+        available_chars = "_01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        temp2 = "".join(random.sample(available_chars, random.randint(3, 5))) 
+        return pre_genname.replace(" ", "_") + temp2
 
 def run_proc() -> None:
     runner.name = names.get_full_name() # Get random name from names lib.
     runner.username = main_functions.usrnamegen(runner.name) # Generate a userame everytime using the same password gen function with tweaks
+    runner.password = main_functions.passwdgen() # Generate a password everytime using a function
     runner.email = "example@example.com" # Get an email from a premade txt file.
 
     print(
         "\nUsername: ", runner.username,
+        "\nPassword: ", runner.password,
         "\nFull Name: ", runner.name,
         "\nEmail: ", runner.email
           )
