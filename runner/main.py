@@ -22,15 +22,40 @@
 
 import time
 import names
+import random
 import undetected_chromedriver as uc
 
+class runner:
+    def __init__(self, driver, name, password, username, email):
+        self.name = name
+        self.password = password
+        self.username = username
+        self.email = email
+        
+        self.driver = driver
 
+class main_functions: 
+    def passwdgen() -> str:
+        available_chars = "!@#$%^&*()_+-=01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        return "".join(random.sample(available_chars, random.randint(8, 12)))
 
-def main() -> None:
-    driver = uc.Chrome(headless=False, use_subprocess=False)
-    driver.get('https://www.instagram.com/accounts/emailsignup/')
-    time.sleep(5)
-    pass
+def run_proc() -> None:
+    runner.name = names.get_full_name() # Get random name from names lib.
+    runner.username = main_functions.usrnamegen(runner.name) # Generate a userame everytime using the same password gen function with tweaks
+    runner.email = "example@example.com" # Get an email from a premade txt file.
+
+    print(
+        "\nUsername: ", runner.username,
+        "\nFull Name: ", runner.name,
+        "\nEmail: ", runner.email
+          )
+        
+    runner.driver = uc.Chrome(headless=True, use_subprocess=False) # Init the driver.
+    runner.driver.get('https://www.instagram.com/accounts/emailsignup/') # Go to the sign up page.
+    time.sleep(1)
+    runner.driver.close()
+    runner.driver.quit()
+        
 
 if __name__ == "__main__":
-    main()
+    run_proc()
