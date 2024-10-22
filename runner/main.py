@@ -34,7 +34,10 @@ def passwdgen() -> str:
 def usrnamegen(gen_name: str) -> str:
     available_chars = "_01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     rand_chars = "".join(random.sample(available_chars, random.randint(3, 5)))
-    return gen_name.replace(" ", "_") + rand_chars
+    temp_modif = gen_name.replace(" ", "_")
+    # I do not want to explain this shit.
+    usrname = temp_modif[0:random.randint(int(len(temp_modif) / 2), len(temp_modif))] + rand_chars
+    return usrname
 
 
 def main() -> None:
