@@ -25,44 +25,38 @@ import names
 import random
 import undetected_chromedriver as uc
 
-class runner:
-    def __init__(self, driver, name, password, username, email):
-        self.name = name
-        self.password = password
-        self.username = username
-        self.email = email
-        
-        self.driver = driver
 
-class main_functions: 
-    def passwdgen() -> str:
-        available_chars = "!@#$%^&*()_+-=01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        return "".join(random.sample(available_chars, random.randint(8, 12)))
-    
-    def usrnamegen(pre_genname: str) -> str:
-        available_chars = "_01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        temp2 = "".join(random.sample(available_chars, random.randint(3, 5))) 
-        return pre_genname.replace(" ", "_") + temp2
+def passwdgen() -> str:
+    available_chars = '!@#$%^&*()_+-=01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    return "".join(random.sample(available_chars, random.randint(8, 12)))
 
-def run_proc() -> None:
-    runner.name = names.get_full_name() # Get random name from names lib.
-    runner.username = main_functions.usrnamegen(runner.name) # Generate a userame everytime using the same password gen function with tweaks
-    runner.password = main_functions.passwdgen() # Generate a password everytime using a function
-    runner.email = "example@example.com" # Get an email from a premade txt file.
+
+def usrnamegen(gen_name: str) -> str:
+    available_chars = "_01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    rand_chars = "".join(random.sample(available_chars, random.randint(3, 5)))
+    return gen_name.replace(" ", "_") + rand_chars
+
+
+def main() -> None:
+    name = names.get_full_name()  # Get random name from names lib.
+    username = usrnamegen(name)  # Generate a username using the same password gen function with tweaks
+    password = passwdgen()  # Generate a password everytime using a function
+    email = "example@example.com"  # Get an email from a pre-made txt file.
 
     print(
-        "\nUsername: ", runner.username,
-        "\nPassword: ", runner.password,
-        "\nFull Name: ", runner.name,
-        "\nEmail: ", runner.email
-          )
-        
-    runner.driver = uc.Chrome(headless=True, use_subprocess=False) # Init the driver.
-    runner.driver.get('https://www.instagram.com/accounts/emailsignup/') # Go to the sign up page.
+        "-" * 35,
+        "\nUsername: ", username,
+        "\nPassword: ", password,
+        "\nFull Name: ", name,
+        "\nEmail: ", email,
+        '\n' + "-" * 35,
+        "\n"
+    )
+    driver = uc.Chrome(headless=False, use_subprocess=False)  # Init the driver.
+    driver.get("https://www.instagram.com/accounts/emailsignup/")  # Go to the sign-up page.
     time.sleep(1)
-    runner.driver.close()
-    runner.driver.quit()
-        
+    driver.close()
+
 
 if __name__ == "__main__":
-    run_proc()
+    main()
