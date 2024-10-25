@@ -40,6 +40,14 @@ def usrnamegen(gen_name: str) -> str:
     return usrname
 
 
+# Just to not make a mess in the code.
+def find_insert(driver, find_by: str, in_value: str, by_value: str) -> None:
+    element = driver.find_element(by=find_by, value=by_value)
+    if not in_value == '':
+        print(f"Inserting value '{in_value}' into the {by_value} placeholder.")
+        element.send_keys(in_value)
+
+
 def main() -> None:
     name = names.get_full_name()  # Get random name from names lib.
     username = usrnamegen(name)  # Generate a username using the same password gen function with tweaks
@@ -57,6 +65,36 @@ def main() -> None:
     )
     driver = uc.Chrome(headless=False, use_subprocess=False)  # Init the driver.
     driver.get("https://www.instagram.com/accounts/emailsignup/")  # Go to the sign-up page.
+    time.sleep(5)
+    # Inserting an email.
+    find_insert(
+        driver=driver,
+        find_by='name',
+        in_value=email,
+        by_value='emailOrPhone',
+    )
+    # Inserting a password.
+    find_insert(
+        driver=driver,
+        find_by='name',
+        in_value=password,
+        by_value='password',
+    )
+    # Inserting a Full Name.
+    find_insert(
+        driver=driver,
+        find_by='name',
+        in_value=name,
+        by_value='fullName',
+    )
+    # Inserting a username.
+    find_insert(
+        driver=driver,
+        find_by='name',
+        in_value=username,
+        by_value='username',
+    )
+
     time.sleep(1)
     driver.close()
 
